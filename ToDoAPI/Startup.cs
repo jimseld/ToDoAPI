@@ -9,7 +9,6 @@ using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
 using ToDoAPI.Models;
 
-
 // From https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api
 
 namespace ToDoAPI
@@ -48,27 +47,28 @@ namespace ToDoAPI
 				options.RespectBrowserAcceptHeader = true;
 				options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("text/xml"));
 				options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+				options.Filters.Add(new Microsoft.AspNetCore.Mvc.RequireHttpsAttribute());
 			})
 			.AddXmlSerializerFormatters();
 
 			// Register the Swagger generator, defining one or more Swagger documents
 			services.AddSwaggerGen(c =>
-			{
-				c.SwaggerDoc("v1", new Info
 				{
-					Version = "v1",
-					Title = "ToDo API",
-					Description = "A simple example ASP.NET Core Web API",
-					TermsOfService = "None",
-					Contact = new Contact { Name = "Jimmy Bobby", Email = "", Url = "https://twitter.com/jimselders11" },
-					License = new License { Name = "Unlicensed!", Url = "https://cbsnews.com" }
-				});
+					c.SwaggerDoc("v1", new Info
+					{
+						Version = "v1",
+						Title = "ToDo API",
+						Description = "A simple example ASP.NET Core Web API",
+						TermsOfService = "None",
+						Contact = new Contact { Name = "Jimmy Bobby", Email = "", Url = "https://twitter.com/jimselders11" },
+						License = new License { Name = "Unlicensed!", Url = "https://cbsnews.com" }
+					});
 
-				// Set the comments path for the Swagger JSON and UI.
-				var basePath = PlatformServices.Default.Application.ApplicationBasePath;
-				var xmlPath = Path.Combine(basePath, "ToDoApi.xml");
-				c.IncludeXmlComments(xmlPath);
-			});
+					// Set the comments path for the Swagger JSON and UI.
+					var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+					var xmlPath = Path.Combine(basePath, "ToDoApi.xml");
+					c.IncludeXmlComments(xmlPath);
+				});
 		}
 
 		/// <summary>
@@ -80,6 +80,8 @@ namespace ToDoAPI
 		{
 			if (env.IsDevelopment())
 			{
+				// Force TLS if not a development build/mode
+				//options.Filters.Add(new Microsoft.AspNetCore.Mvc.RequireHttpsAttribute());
 				app.UseDeveloperExceptionPage();
 			}
 
@@ -90,10 +92,12 @@ namespace ToDoAPI
 			// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
 			app.UseSwaggerUI(c =>
 			{
-				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+				c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDo API");
 			});
 
 			app.UseMvc();
 		}
-	}
-}
+
+	} // class
+} // namespace
+

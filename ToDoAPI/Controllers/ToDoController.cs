@@ -28,7 +28,7 @@ namespace TodoAPI.Controllers
 
 			if (_context.ToDoItems.Count() == 0)
 			{
-				for (int i = 0; i < 20; i++)
+				for (int i = 0; i < 9; i++)
 					_context.ToDoItems.Add(new ToDoItem { Name = $"Item {i}, made in the controller constructor" });
 				_context.SaveChanges();
 			}
