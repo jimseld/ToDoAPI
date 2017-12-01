@@ -18,8 +18,8 @@
     },
     "ToDoAPI": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchBrowser": false,
+      "launchUrl": "api/todo",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
