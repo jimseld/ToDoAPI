@@ -28,7 +28,8 @@ namespace TodoAPI.Controllers
 
 			if (_context.ToDoItems.Count() == 0)
 			{
-				_context.ToDoItems.Add(new ToDoItem { Name = "The first item, made in the controller constructor" });
+				for (int i = 0; i < 20; i++)
+					_context.ToDoItems.Add(new ToDoItem { Name = $"Item {i}, made in the controller constructor" });
 				_context.SaveChanges();
 			}
 		}
@@ -41,7 +42,7 @@ namespace TodoAPI.Controllers
 		///
 		///     POST /ToDo
 		///     {
-		///        "id": 1,						// optional, if omitted then db uses default
+		///        "id": 1,						// optional key, if omitted then db uses default
 		///        "name": "Some item text",
 		///        "isComplete": true
 		///     }
