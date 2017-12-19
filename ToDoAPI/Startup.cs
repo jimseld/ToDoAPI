@@ -31,7 +31,28 @@ namespace ToDoAPI
 		{
 			Configuration = configuration;
 			Environment = env;
-		}
+
+#if false
+			// FizzBuzz!
+			for (int i = 1; i <= 100; i++)
+			{
+				System.Console.Write(i);
+
+				if (i % 5 == 0 || i % 3 == 0)
+				{
+					// We've got a fizz or a buzz or maybe both
+					string fb = " ";
+					if (i % 3 == 0)
+						fb += "Fizz";
+					if (i % 5 == 0)
+						fb += "Buzz";
+					System.Console.Write(fb);
+				}
+				System.Console.WriteLine();
+			}
+#endif
+
+		} // Startup()
 
 		/// <summary>
 		/// 
@@ -62,6 +83,8 @@ namespace ToDoAPI
 				options.RespectBrowserAcceptHeader = true;
 				options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("text/xml"));
 				options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+				options.FormatterMappings.SetMediaTypeMappingForFormat("csv", MediaTypeHeaderValue.Parse("application/csv"));
+
 				if (Environment?.IsProduction() ?? false)
 					options.Filters.Add(new Microsoft.AspNetCore.Mvc.RequireHttpsAttribute());  // TLS
 			})

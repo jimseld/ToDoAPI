@@ -35,6 +35,48 @@ namespace TodoAPI.Controllers
 		}
 
 		/// <summary>
+		/// Gets all records
+		/// </summary>
+		/// <remarks>
+		/// Sample request:
+		///
+		///     GET /ToDo/
+		///
+		/// </remarks>
+		/// <response code="200">All items in db are returned. Might be empty set.</response>
+		[HttpGet]
+		[ProducesResponseType(typeof(ToDoItem), 200)]
+		public IEnumerable<ToDoItem> GetAll()
+		{
+			return _context.ToDoItems.ToList();
+		}
+
+		/// <summary>
+		/// Gets a record by id key
+		/// </summary>
+		/// <param name="id"></param>
+		/// <remarks>
+		/// Sample request:
+		///
+		///     GET /ToDo/{id}
+		///
+		/// </remarks>
+		/// <response code="200">Specified item is returned.</response>
+		/// <response code="404">Specified item was not found.</response>
+		[HttpGet("{id}", Name = "GetToDo")]
+		[ProducesResponseType(typeof(ToDoItem), 200)]
+		[ProducesResponseType(typeof(ToDoItem), 404)]
+		public IActionResult GetById(long id)
+		{
+			var item = _context.ToDoItems.FirstOrDefault(t => t.Id == id);
+			if (item == null)
+			{
+				return NotFound();
+			}
+			return new ObjectResult(item);
+		}
+
+		/// <summary>
 		/// Creates a record from JSON body, and returns URL to new item
 		/// </summary>
 		/// <remarks>
@@ -139,48 +181,6 @@ namespace TodoAPI.Controllers
 			_context.ToDoItems.Remove(todo);
 			_context.SaveChanges();
 			return new NoContentResult();
-		}
-
-		/// <summary>
-		/// Gets all records
-		/// </summary>
-		/// <remarks>
-		/// Sample request:
-		///
-		///     GET /ToDo/
-		///
-		/// </remarks>
-		/// <response code="200">All items in db are returned. Might be empty set.</response>
-		[HttpGet]
-		[ProducesResponseType(typeof(ToDoItem), 200)]
-		public IEnumerable<ToDoItem> GetAll()
-		{
-			return _context.ToDoItems.ToList();
-		}
-
-		/// <summary>
-		/// Gets a record by id key
-		/// </summary>
-		/// <param name="id"></param>
-		/// <remarks>
-		/// Sample request:
-		///
-		///     GET /ToDo/{id}
-		///
-		/// </remarks>
-		/// <response code="200">Specified item is returned.</response>
-		/// <response code="404">Specified item was not found.</response>
-		[HttpGet("{id}", Name = "GetToDo")]
-		[ProducesResponseType(typeof(ToDoItem), 200)]
-		[ProducesResponseType(typeof(ToDoItem), 404)]
-		public IActionResult GetById(long id)
-		{
-			var item = _context.ToDoItems.FirstOrDefault(t => t.Id == id);
-			if (item == null)
-			{
-				return NotFound();
-			}
-			return new ObjectResult(item);
 		}
 
 	} // class
