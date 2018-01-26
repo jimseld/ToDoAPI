@@ -7,6 +7,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Net.Http.Headers;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
+using TodoApi;
 using ToDoAPI.Models;
 
 // From https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api
@@ -83,7 +84,9 @@ namespace ToDoAPI
 				options.RespectBrowserAcceptHeader = true;
 				options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("text/xml"));
 				options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+				options.FormatterMappings.SetMediaTypeMappingForFormat("csv", MediaTypeHeaderValue.Parse("text/csv"));
 				options.FormatterMappings.SetMediaTypeMappingForFormat("csv", MediaTypeHeaderValue.Parse("application/csv"));
+				options.OutputFormatters.Insert(0, new CsvFormatter());		// Put at front of formatters list
 
 				if (Environment?.IsProduction() ?? false)
 					options.Filters.Add(new Microsoft.AspNetCore.Mvc.RequireHttpsAttribute());  // TLS
